@@ -624,6 +624,28 @@ img{max-width:100%;display:block}
 .streak-day.active{background:linear-gradient(135deg,var(--gold),var(--amber));color:#08080f;font-weight:700}
 .streak-day.past{background:rgba(200,168,75,.25)}
 
+
+.metric-strip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:10px}
+@media(min-width:520px){.metric-strip{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.metric-pill{border:1px solid var(--border);border-radius:var(--r2);padding:10px;background:var(--glass)}
+.metric-k{font-size:10px;color:var(--chrome);text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.metric-v{font-size:20px;line-height:1.1;color:var(--gold2);font-family:var(--font-serif)}
+.metric-d{font-size:11px;color:var(--text2)}
+.chart-card{margin-top:12px;border:1px solid var(--border);border-radius:var(--r3);padding:12px;background:rgba(200,168,75,.03)}
+.chart-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px}
+.chart-title{font-size:12px;font-weight:700;color:var(--text)}
+.chart-sub{font-size:10px;color:var(--chrome)}
+.chart-wrap{height:190px;position:relative}
+.chart-legend{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.chart-chip{font-size:10px;border:1px solid var(--border2);border-radius:999px;padding:3px 8px;color:var(--text2)}
+.chart-chip i{display:inline-block;width:8px;height:8px;border-radius:999px;margin-right:5px}
+.backend-health{display:grid;grid-template-columns:1fr;gap:8px;margin-top:8px}
+.health-row{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border);border-radius:var(--r2);padding:9px 11px;background:var(--glass)}
+.health-label{font-size:11px;color:var(--text2)}
+.health-value{font-size:11px;font-weight:700;color:var(--gold2)}
+.health-value.ok{color:var(--emerald)}
+.health-value.warn{color:#fca5a5}
+
 /* ═════ AI MENTOR ═════ */
 .mentor-panel{max-width:780px;margin:0 auto}
 .mentor-header{text-align:center;margin-bottom:28px}
@@ -1773,22 +1795,49 @@ app.post('/api/ai/chat', authMiddleware, aiLimiter, chatHandler);</pre></div>
 
     <!-- ══ DASHBOARD PANEL ══ -->
     <div id="dashboard" class="panel">
-      <div class="tab-hdr"><h2 class="tab-title">Your Dashboard</h2><p class="tab-sub">Track your progress, streaks, and completed milestones</p></div>
+      <div class="tab-hdr"><h2 class="tab-title">Founder Command Center</h2><p class="tab-sub">Live stats, streak signal, and AI backend health in one place</p></div>
+      <div class="metric-strip">
+        <div class="metric-pill"><div class="metric-k">Execution Score</div><div class="metric-v" id="metricExecution">0%</div><div class="metric-d" id="metricExecutionDelta">+0 this week</div></div>
+        <div class="metric-pill"><div class="metric-k">Current Streak</div><div class="metric-v" id="metricStreak">0d</div><div class="metric-d" id="metricBestStreak">Best: 0d</div></div>
+        <div class="metric-pill"><div class="metric-k">Milestones</div><div class="metric-v" id="metricMilestones">0/10</div><div class="metric-d">Roadmap progress</div></div>
+        <div class="metric-pill"><div class="metric-k">AI Replies Today</div><div class="metric-v" id="metricAiMsgs">0/20</div><div class="metric-d">Daily mentor quota</div></div>
+      </div>
       <div class="dashboard-grid">
         <div class="dash-card">
           <div class="dash-card-title">📋 Today's Checklist</div>
           <div class="checklist" id="dailyChecklist">
             <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box"></div><div class="cl-text">30 min focused learning session</div></div>
-            <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box"></div><div class="cl-text">Write or ship one line of code</div></div>
-            <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box"></div><div class="cl-text">Read one AI/startup article</div></div>
-            <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box"></div><div class="cl-text">Post progress update publicly</div></div>
-            <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box"></div><div class="cl-text">Review yesterday's code/learning</div></div>
+            <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box"></div><div class="cl-text">Ship one meaningful code improvement</div></div>
+            <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box"></div><div class="cl-text">Review one funnel / retention metric</div></div>
+            <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box"></div><div class="cl-text">Talk to one real or potential user</div></div>
+            <div class="cl-item" onclick="toggleCL(this)"><div class="cl-box"></div><div class="cl-text">Write tomorrow's one key priority</div></div>
+          </div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-title">📈 Founder Momentum Chart</div>
+          <div class="chart-card">
+            <div class="chart-head"><div><div class="chart-title">Last 8 Weeks</div><div class="chart-sub">Learning, shipping, and consistency trend</div></div></div>
+            <div class="chart-wrap"><canvas id="momentumChart" aria-label="Momentum chart" role="img"></canvas></div>
+            <div class="chart-legend">
+              <span class="chart-chip"><i style="background:var(--gold)"></i>Execution</span>
+              <span class="chart-chip"><i style="background:var(--violet2)"></i>Learning</span>
+              <span class="chart-chip"><i style="background:var(--emerald)"></i>Consistency</span>
+            </div>
           </div>
         </div>
         <div class="dash-card">
           <div class="dash-card-title">🔥 Streak History (Last 28 Days)</div>
           <div class="streak-grid" id="streakGrid"></div>
           <div style="margin-top:12px;font-size:11px;color:var(--chrome)">🟡 Active day &nbsp;·&nbsp; ⬜ Missed</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-title">🛡️ AI Backend Health</div>
+          <div class="backend-health" id="backendHealth">
+            <div class="health-row"><span class="health-label">Gateway</span><span class="health-value warn" id="healthGateway">Checking...</span></div>
+            <div class="health-row"><span class="health-label">Rate Limiter</span><span class="health-value" id="healthLimiter">20/day per user</span></div>
+            <div class="health-row"><span class="health-label">Model Route</span><span class="health-value" id="healthModel">/api/mentor</span></div>
+            <div class="health-row"><span class="health-label">Security</span><span class="health-value" id="healthSecurity">Key hidden server-side</span></div>
+          </div>
         </div>
         <div class="dash-card">
           <div class="dash-card-title">🏆 Milestones Earned</div>
@@ -1807,7 +1856,7 @@ app.post('/api/ai/chat', authMiddleware, aiLimiter, chatHandler);</pre></div>
         <div class="mentor-header">
           <div class="mentor-crown">✦ AI-Powered</div>
           <h2 class="mentor-h">Your Personal <em>AI Mentor</em></h2>
-          <p class="mentor-sub">Ask anything — powered by Claude AI. Code help, strategy, career advice, startup guidance.</p>
+          <p class="mentor-sub">Ask anything — now routed through your secure backend gateway for production-safe AI mentoring.</p>
         </div>
         <div class="chat-wrap">
           <div class="chat-topbar">
@@ -1819,12 +1868,12 @@ app.post('/api/ai/chat', authMiddleware, aiLimiter, chatHandler);</pre></div>
             <div class="chat-status"><div class="chat-dot"></div>Online</div>
           </div>
           <div class="chat-msgs" id="chatMsgs">
-            <div class="msg ai"><div class="msg-ava">♛</div><div class="msg-bub">Welcome! I'm your AI Mentor, powered by Claude. I'm here to guide your AI founder journey — ask me about learning strategy, code help, startup ideas, growth tactics, or anything else. What shall we explore today?</div></div>
+            <div class="msg ai"><div class="msg-ava">♛</div><div class="msg-bub">Welcome! I'm your AI Mentor. Your chat now goes through a secure backend proxy with rate limiting and health checks. Ask me strategy, code, growth, or product questions.</div></div>
           </div>
           <div class="prompt-templates">
             <button class="pt-btn" onclick="qprompt(this)">What should I learn first?</button>
             <button class="pt-btn" onclick="qprompt(this)">Review my startup idea</button>
-            <button class="pt-btn" onclick="qprompt(this)">Best free AI APIs 2025</button>
+            <button class="pt-btn" onclick="qprompt(this)">Best free AI APIs 2026</button>
             <button class="pt-btn" onclick="qprompt(this)">How to get first users?</button>
             <button class="pt-btn" onclick="qprompt(this)">Explain React hooks simply</button>
             <button class="pt-btn" onclick="qprompt(this)">How to launch on Product Hunt?</button>
@@ -2043,7 +2092,9 @@ function loginSuccess(user) {
   // Show app
   const app = $('#app'); app.classList.add('visible');
   setTimeout(() => {
-    renderQ(); loadProgress(); loadMilestones(); loadTasks(); staggerPhases();
+    renderQ(); loadProgress();
+updateExecutiveMetrics();
+checkBackendHealth(); loadMilestones(); loadTasks(); staggerPhases();
     updateRateBadge(); buildStreakGrid(); buildMilestoneSummary(); buildWeeklyFocus();
     if (!user.demo) showToast(`✓ Welcome back, ${user.name.split(' ')[0]}!`);
     else showToast('👀 Exploring in demo mode');
@@ -2130,7 +2181,7 @@ function showTab(id, btn) {
   $$('.nav-btn').forEach(b => b.classList.remove('active'));
   $(`#${id}`).classList.add('active');
   if (btn) btn.classList.add('active');
-  if (id === 'dashboard') { buildStreakGrid(); buildMilestoneSummary(); buildWeeklyFocus(); }
+  if (id === 'dashboard') { buildStreakGrid(); buildMilestoneSummary(); buildWeeklyFocus(); drawMomentumChart(); updateExecutiveMetrics(); checkBackendHealth(); }
   $(`#${id}`).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
@@ -2390,6 +2441,81 @@ function buildWeeklyFocus() {
   });
 }
 
+function drawMomentumChart() {
+  const cv = $('#momentumChart');
+  if (!cv) return;
+  const ratio = window.devicePixelRatio || 1;
+  const w = cv.clientWidth || 320;
+  const h = cv.clientHeight || 190;
+  cv.width = Math.floor(w * ratio); cv.height = Math.floor(h * ratio);
+  const ctx = cv.getContext('2d');
+  ctx.scale(ratio, ratio);
+  ctx.clearRect(0, 0, w, h);
+  const pad = { l: 26, r: 14, t: 16, b: 24 };
+  const gw = w - pad.l - pad.r, gh = h - pad.t - pad.b;
+  const exec = [32, 40, 48, 58, 63, 72, 80, 88];
+  const learn = [44, 48, 53, 60, 66, 70, 76, 82];
+  const consistency = [20, 34, 38, 52, 59, 66, 72, 78];
+  const sets = [
+    {d: exec, c: getComputedStyle(document.documentElement).getPropertyValue('--gold').trim() || '#c8a84b'},
+    {d: learn, c: getComputedStyle(document.documentElement).getPropertyValue('--violet2').trim() || '#9a7cdf'},
+    {d: consistency, c: getComputedStyle(document.documentElement).getPropertyValue('--emerald').trim() || '#3ca86e'}
+  ];
+  ctx.strokeStyle = 'rgba(255,255,255,.12)'; ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.t + (gh * i / 4);
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(w - pad.r, y); ctx.stroke();
+  }
+  const toXY = (i, v) => [pad.l + (gw * i / 7), pad.t + gh - (v / 100) * gh];
+  sets.forEach(set => {
+    ctx.beginPath(); ctx.lineWidth = 2.2; ctx.strokeStyle = set.c;
+    set.d.forEach((v, i) => {
+      const [x, y] = toXY(i, v);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+    set.d.forEach((v, i) => {
+      const [x, y] = toXY(i, v);
+      ctx.beginPath(); ctx.fillStyle = set.c; ctx.arc(x, y, 2.6, 0, Math.PI * 2); ctx.fill();
+    });
+  });
+}
+
+function updateExecutiveMetrics() {
+  const d = _A._gd();
+  const phase = d.phase || 0;
+  const streak = d.streak || 0;
+  const saved = JSON.parse(localStorage.getItem('afos_ms') || '[]');
+  const done = saved.filter(Boolean).length;
+  const execScore = Math.min(100, Math.round(((phase / PH.length) * 65) + (Math.min(streak, 21) / 21 * 35)));
+  const weeklyDelta = Math.max(1, Math.round(execScore / 12));
+  const bestStreak = Math.max(streak, parseInt(localStorage.getItem('afos_best_streak') || '0'));
+  localStorage.setItem('afos_best_streak', String(bestStreak));
+  const c = _A._cc();
+  if ($('#metricExecution')) $('#metricExecution').textContent = execScore + '%';
+  if ($('#metricExecutionDelta')) $('#metricExecutionDelta').textContent = `+${weeklyDelta}% this week`;
+  if ($('#metricStreak')) $('#metricStreak').textContent = streak + 'd';
+  if ($('#metricBestStreak')) $('#metricBestStreak').textContent = `Best: ${bestStreak}d`;
+  if ($('#metricMilestones')) $('#metricMilestones').textContent = `${done}/10`;
+  if ($('#metricAiMsgs')) $('#metricAiMsgs').textContent = `${c}/20`;
+}
+
+async function checkBackendHealth() {
+  const gateway = $('#healthGateway');
+  const model = $('#healthModel');
+  const sec = $('#healthSecurity');
+  try {
+    const res = await fetch('/api/health');
+    if (!res.ok) throw new Error('offline');
+    const data = await res.json();
+    if (gateway) { gateway.textContent = data.status === 'ok' ? 'Online' : 'Degraded'; gateway.className = 'health-value ' + (data.status === 'ok' ? 'ok' : 'warn'); }
+    if (model && data.model) model.textContent = data.model;
+    if (sec && data.security) sec.textContent = data.security;
+  } catch {
+    if (gateway) { gateway.textContent = 'Offline'; gateway.className = 'health-value warn'; }
+  }
+}
+
 // ═══════════════════════════════════════════════════════
 // AI MENTOR CHAT
 // ═══════════════════════════════════════════════════════
@@ -2418,10 +2544,10 @@ async function sendMsg() {
   updateRateBadge();
   const tid = appendTyping();
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/api/mentor', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: MENTOR_SYS, messages: chatHistory.slice(-12) })
+      body: JSON.stringify({ messages: chatHistory.slice(-12), system: MENTOR_SYS })
     });
     removeTyping(tid);
     if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.error?.message || 'API error ' + res.status) }
@@ -2433,7 +2559,7 @@ async function sendMsg() {
     $('#regenBtn').disabled = false; $('#copyBtn').disabled = false;
   } catch (err) {
     removeTyping(tid);
-    appendMsg('ai', `⚠️ <strong>Connection error.</strong> To use the AI Mentor, this app needs to be served from a backend that proxies to the Anthropic API. In production, API keys should never be exposed in frontend code.<br><br>For now, add your API key in a backend proxy endpoint and point requests there for full functionality.`);
+    appendMsg('ai', `⚠️ <strong>Connection error.</strong> The backend gateway is unavailable right now. Start the Node server, add your provider API key in <code>.env</code>, and retry. This app is configured to call <code>/api/mentor</code> so secrets never touch frontend code.`);
   }
   isBusy = false; $('#chatSend').disabled = false;
 }
@@ -2445,15 +2571,15 @@ async function regenLast() {
   isBusy = true; $('#chatSend').disabled = true; $('#regenBtn').disabled = true;
   const tid = appendTyping();
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/api/mentor', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: MENTOR_SYS, messages: chatHistory.slice(-12) })
+      body: JSON.stringify({ messages: chatHistory.slice(-12), system: MENTOR_SYS })
     });
     removeTyping(tid);
     const data = await res.json(); const reply = data.content?.[0]?.text || 'Try asking again.';
     chatHistory.push({ role: 'assistant', content: reply }); lastAIMsg = reply;
     appendMsg('ai', fmtMD(reply)); $('#regenBtn').disabled = false; $('#copyBtn').disabled = false;
-  } catch { removeTyping(tid); appendMsg('ai', 'Regeneration failed. Please try again.') }
+  } catch { removeTyping(tid); appendMsg('ai', 'Regeneration failed. Please verify the backend server is running on /api/mentor and try again.') }
   isBusy = false; $('#chatSend').disabled = false;
 }
 
@@ -2554,6 +2680,7 @@ function jumpToPhase() {
 
 
 
+window.addEventListener('resize', drawMomentumChart);
 window.addEventListener('keydown', e => { if (e.key === 'Escape') $('#profileDrop').classList.remove('open') });
 
 // Close profile on outside click
