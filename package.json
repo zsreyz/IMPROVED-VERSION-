@@ -1,0 +1,11 @@
+{
+  "name": "ai-founder-os",
+  "version": "1.0.1",
+  "private": true,
+  "description": "AI Founder OS frontend + secure backend mentor gateway",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  }
+}
