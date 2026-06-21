@@ -3,13 +3,226 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Founder OS</title>
-  <meta http-equiv="refresh" content="0; url=./ai-founder-roadmap-1.html" />
-  <script>
-    window.location.replace('./ai-founder-roadmap-1.html');
-  </script>
+  <meta name="description" content="Language Discovery Wheel is an interactive educational app that recommends a language based on your interests." />
+  <title>Language Discovery Wheel</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #090b17;
+      --bg-2: #11162b;
+      --text: #f8fbff;
+      --muted: #aeb8d3;
+      --card: rgba(255,255,255,.1);
+      --card-strong: rgba(255,255,255,.16);
+      --border: rgba(255,255,255,.2);
+      --accent: #8b5cf6;
+      --accent-2: #22d3ee;
+      --accent-3: #f97316;
+      --success: #34d399;
+      --shadow: 0 24px 80px rgba(0,0,0,.4);
+      --radius: 28px;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    [data-theme="light"] {
+      color-scheme: light;
+      --bg: #f6f7ff;
+      --bg-2: #eaf5ff;
+      --text: #101426;
+      --muted: #59627a;
+      --card: rgba(255,255,255,.72);
+      --card-strong: rgba(255,255,255,.9);
+      --border: rgba(50,61,96,.16);
+      --shadow: 0 24px 70px rgba(53,70,126,.18);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; min-height: 100vh; font-family: var(--font); color: var(--text);
+      background:
+        radial-gradient(circle at 12% 14%, rgba(139,92,246,.38), transparent 28rem),
+        radial-gradient(circle at 88% 8%, rgba(34,211,238,.28), transparent 25rem),
+        radial-gradient(circle at 50% 90%, rgba(249,115,22,.2), transparent 28rem),
+        linear-gradient(135deg, var(--bg), var(--bg-2));
+      overflow-x: hidden;
+    }
+    body::before, body::after { content:""; position:fixed; width:22rem; height:22rem; border-radius:50%; filter: blur(36px); opacity:.32; pointer-events:none; z-index:-1; animation: float 13s ease-in-out infinite alternate; }
+    body::before { left:-7rem; top:22rem; background:var(--accent); }
+    body::after { right:-6rem; top:8rem; background:var(--accent-2); animation-delay:-5s; }
+    @keyframes float { to { transform: translate3d(42px, -36px, 0) scale(1.08); } }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    .shell { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 22px 0 42px; }
+    header { display:flex; justify-content:space-between; gap:16px; align-items:center; margin-bottom: 18px; }
+    .brand { display:flex; gap:12px; align-items:center; font-weight:900; letter-spacing:-.04em; font-size: clamp(1.1rem, 3vw, 1.55rem); }
+    .logo { width:46px; height:46px; border-radius:16px; display:grid; place-items:center; background:linear-gradient(135deg,var(--accent),var(--accent-2)); box-shadow:0 16px 42px rgba(34,211,238,.24); }
+    .theme-toggle, .ghost, .primary, .chip, .icon-btn { border:1px solid var(--border); color:var(--text); background:var(--card); backdrop-filter: blur(18px); border-radius:999px; transition:.22s ease; }
+    .theme-toggle, .icon-btn { min-height:44px; padding: 0 14px; }
+    .theme-toggle:hover, .ghost:hover, .primary:hover, .chip:hover, .icon-btn:hover { transform: translateY(-2px); background: var(--card-strong); }
+    .hero { display:grid; grid-template-columns: 1.02fr .98fr; gap: 24px; align-items:center; }
+    .panel { border:1px solid var(--border); background:var(--card); backdrop-filter: blur(24px); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .intro { padding: clamp(24px,4vw,42px); }
+    h1 { margin: 0 0 12px; font-size: clamp(2.25rem, 7vw, 5.8rem); line-height:.9; letter-spacing:-.08em; }
+    .gradient { background: linear-gradient(90deg, var(--accent-2), var(--accent), #fb7185); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .lead { color:var(--muted); font-size: clamp(1rem, 2vw, 1.18rem); line-height:1.65; margin:0 0 24px; }
+    .hero-actions, .insight-row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+    .mini-stat { min-width:128px; padding:14px; border:1px solid var(--border); border-radius:20px; background:rgba(255,255,255,.08); }
+    .mini-stat strong { display:block; font-size:1.45rem; letter-spacing:-.04em; }
+    .setup { padding: 22px; display:grid; gap: 18px; }
+    .setup h2, .card h3 { margin:0; letter-spacing:-.04em; }
+    .chips { display:flex; flex-wrap:wrap; gap:10px; }
+    .chip { padding:10px 13px; font-weight:800; }
+    .chip[aria-pressed="true"] { background: linear-gradient(135deg, rgba(139,92,246,.95), rgba(34,211,238,.82)); border-color:transparent; color:white; box-shadow:0 12px 34px rgba(139,92,246,.28); }
+    .chip.known[aria-pressed="true"] { background: linear-gradient(135deg, rgba(52,211,153,.95), rgba(34,211,238,.78)); }
+    .field { display:grid; gap:8px; }
+    label { font-weight:850; }
+    select { width:100%; min-height:48px; border-radius:16px; border:1px solid var(--border); background: var(--card-strong); color:var(--text); padding:0 14px; }
+    .primary { padding: 14px 22px; border:0; font-weight:950; color:white; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow:0 18px 45px rgba(34,211,238,.22); }
+    .ghost { padding: 12px 16px; font-weight:850; }
+    .wheel-zone { display:grid; place-items:center; gap:18px; padding: 20px; position:relative; overflow:hidden; isolation:isolate; }
+    .wheel-zone::before { content:""; position:absolute; inset:9%; border-radius:50%; background:conic-gradient(from 90deg, rgba(139,92,246,.16), rgba(34,211,238,.24), rgba(249,115,22,.14), rgba(139,92,246,.16)); filter: blur(22px); animation: halo 8s linear infinite; z-index:-1; }
+    @keyframes halo { to { transform: rotate(360deg); } }
+    .wheel-wrap { position:relative; width:min(82vw, 520px); aspect-ratio:1; display:grid; place-items:center; }
+    .pointer { position:absolute; top:-4px; z-index:3; width:0; height:0; border-left:20px solid transparent; border-right:20px solid transparent; border-top:40px solid #fff; filter: drop-shadow(0 8px 12px rgba(0,0,0,.35)); }
+    canvas#wheel { width:100%; height:100%; border-radius:50%; filter: drop-shadow(0 28px 50px rgba(0,0,0,.32)); transition: filter .3s ease; }
+    .spinning canvas#wheel { filter: drop-shadow(0 28px 70px rgba(34,211,238,.42)); }
+    .spin-btn { position:absolute; width:128px; height:128px; border-radius:50%; border:8px solid rgba(255,255,255,.22); color:#fff; font-size:1.35rem; font-weight:1000; letter-spacing:.04em; background: radial-gradient(circle at 30% 20%, #fff7, transparent 28%), linear-gradient(135deg, #fb7185, var(--accent), var(--accent-2)); box-shadow: 0 20px 45px rgba(139,92,246,.38); }
+    .spin-btn:disabled { opacity:.72; cursor:not-allowed; }
+    .ticker { min-height:28px; color:var(--muted); font-weight:800; text-align:center; }
+    .dashboard { margin-top:24px; display:grid; grid-template-columns: 1.2fr .8fr; gap:24px; }
+    .card { padding:22px; }
+    .result { display:none; gap:14px; }
+    .result.show { display:grid; animation: pop .55s cubic-bezier(.2,1.4,.3,1); }
+    @keyframes pop { from { opacity:0; transform: translateY(12px) scale(.96);} to { opacity:1; transform:none;} }
+    .result-title { font-size: clamp(1.8rem, 4vw, 3.25rem); margin:0; letter-spacing:-.06em; }
+    .meta { display:flex; flex-wrap:wrap; gap:10px; }
+    .pill { padding:8px 11px; border-radius:999px; background:var(--card-strong); border:1px solid var(--border); font-weight:850; color:var(--muted); }
+    .roadmap { display:grid; gap:10px; counter-reset: step; }
+    .step { position:relative; padding:13px 13px 13px 46px; border:1px solid var(--border); border-radius:18px; background:rgba(255,255,255,.07); }
+    .step::before { counter-increment: step; content: counter(step); position:absolute; left:13px; top:13px; width:22px; height:22px; border-radius:50%; display:grid; place-items:center; background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:white; font-weight:900; font-size:.8rem; }
+    .side { display:grid; gap:16px; }
+    .history-list, .badges { display:grid; gap:10px; }
+    .history-item, .badge { display:flex; justify-content:space-between; gap:10px; align-items:center; padding:12px; border-radius:16px; background:rgba(255,255,255,.07); border:1px solid var(--border); }
+    .agent-card { position:relative; overflow:hidden; }
+    .agent-card::before { content:""; position:absolute; inset:-60% -20% auto auto; width:220px; height:220px; background:radial-gradient(circle, rgba(34,211,238,.35), transparent 64%); }
+    .agent-head { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+    .agent-avatar { width:46px; height:46px; border-radius:16px; display:grid; place-items:center; background:linear-gradient(135deg,var(--accent-3),var(--accent)); box-shadow:0 14px 32px rgba(249,115,22,.22); }
+    .agent-list { margin:10px 0 0; padding-left:18px; color:var(--muted); line-height:1.55; }
+    .progress-bar { height:12px; border-radius:999px; background:rgba(255,255,255,.12); overflow:hidden; }
+    .progress-fill { height:100%; width:0%; background:linear-gradient(90deg,var(--success),var(--accent-2)); transition: width .5s ease; }
+    .confetti { position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:10; }
+    .confetti i { position:absolute; width:10px; height:16px; border-radius:3px; animation: fall 1.8s ease-out forwards; }
+    @keyframes fall { to { transform: translateY(105vh) rotate(760deg); opacity:0; } }
+    @media (max-width: 880px) { .hero, .dashboard { grid-template-columns:1fr; } .intro { text-align:center; } header { align-items:flex-start; } .wheel-wrap { width:min(94vw, 480px); } .spin-btn { width:104px; height:104px; font-size:1.05rem; } }
+  </style>
 </head>
 <body>
-  <p>Redirecting to AI Founder OS…</p>
+  <div class="confetti" id="confetti"></div>
+  <main class="shell">
+    <header>
+      <div class="brand"><span class="logo" aria-hidden="true">🌍</span><span>Language Discovery Wheel</span></div>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">🌙 Dark</button>
+    </header>
+
+    <section class="hero" aria-labelledby="pageTitle">
+      <div class="intro panel">
+        <h1 id="pageTitle">Find your next <span class="gradient">language adventure</span>.</h1>
+        <p class="lead">Pick the topics you love and your preferred interface language. The app builds a personalized global language wheel, spins with cinematic physics, then gives you a learning roadmap, challenge, progress tracker, badges, and a shareable result card.</p>
+        <div class="hero-actions"><button class="ghost" id="sampleBtn" type="button">Try anime + gaming + tech sample</button><div class="mini-stat"><strong id="matchCount">8</strong><span>live matches</span></div><div class="mini-stat"><strong>AI</strong><span>advisor agent</span></div></div>
+      </div>
+
+      <form class="setup panel" id="setupForm">
+        <h2>First launch setup</h2>
+        <div class="field">
+          <label>What are your interests?</label>
+          <div class="chips" id="interestChips" aria-label="Interest options"></div>
+        </div>
+        <div class="field">
+          <label>Which languages have you already learned?</label>
+          <div class="chips" id="knownChips" aria-label="Already learned language options"></div>
+        </div>
+        <div class="field">
+          <label for="preferredLanguage">Which language do you speak/prefer?</label>
+          <select id="preferredLanguage">
+            <option>English</option><option>Spanish</option><option>French</option><option>German</option><option>Portuguese</option><option>Hindi</option><option>Arabic</option><option>Mandarin Chinese</option>
+          </select>
+        </div>
+        <button class="primary" type="submit">Generate My Wheel</button>
+      </form>
+    </section>
+
+    <section class="wheel-zone panel" id="wheelSection" aria-live="polite">
+      <div class="wheel-wrap" id="wheelWrap">
+        <div class="pointer" aria-hidden="true"></div>
+        <canvas id="wheel" width="900" height="900" aria-label="Personalized spinning language wheel"></canvas>
+        <button class="spin-btn" id="spinBtn" type="button">SPIN</button>
+      </div>
+      <div class="ticker" id="ticker">Choose interests to generate a custom wheel.</div>
+      <div class="chips" id="wheelTags"></div>
+    </section>
+
+    <section class="dashboard">
+      <article class="card panel result" id="resultCard">
+        <p class="pill" style="width:max-content">🎉 Your Language Match</p>
+        <h2 class="result-title" id="resultName">Japanese</h2>
+        <div class="meta" id="resultMeta"></div>
+        <p id="whyText"></p>
+        <p><strong>Fun fact:</strong> <span id="funFact"></span></p>
+        <div><strong>AI-generated learning roadmap</strong><div class="roadmap" id="roadmap"></div></div>
+        <div class="chips"><button class="primary" id="spinAgain" type="button">Spin Again</button><button class="ghost" id="shareBtn" type="button">Share result as image</button></div>
+      </article>
+      <aside class="side">
+        <section class="card panel agent-card" id="agentCard"><div class="agent-head"><span class="agent-avatar">🤖</span><div><h3>Discovery Agent</h3><p class="lead" style="margin:0">Personalized suggestions update as you choose interests and known languages.</p></div></div><div id="agentAdvice"></div></section>
+        <section class="card panel"><h3>Daily language challenge</h3><p id="challenge">Generate your wheel to unlock today’s challenge.</p></section>
+        <section class="card panel"><h3>Progress tracker</h3><p><strong id="progressLabel">0</strong> discoveries completed</p><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div></section>
+        <section class="card panel"><h3>Achievement badges</h3><div class="badges" id="badges"></div></section>
+        <section class="card panel"><h3>Previous results</h3><div class="history-list" id="historyList"></div></section>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const interests = ['Technology','Gaming','Business','Travel','Art','Science','Music','Movies','Sports','Anime','Food','History','Fashion','Literature','Nature'];
+    const knownOptions = ['English','Spanish','French','German','Portuguese','Hindi','Arabic','Mandarin Chinese','Japanese','Korean','Italian','Dutch','Swedish'];
+    const languages = [
+      {name:'Japanese', region:'Japan', difficulty:'Advanced', time:'18–24 months', tags:['Anime','Gaming','Technology','Art','Food'], fact:'Japanese uses three writing systems: Hiragana, Katakana, and Kanji.'},
+      {name:'Korean', region:'South Korea', difficulty:'Intermediate', time:'14–20 months', tags:['Music','Movies','Gaming','Technology','Fashion'], fact:'Hangul was intentionally designed to be logical and easy to learn.'},
+      {name:'Mandarin Chinese', region:'China, Taiwan, Singapore', difficulty:'Advanced', time:'20–30 months', tags:['Business','Technology','Science','Travel','History'], fact:'Mandarin is tonal, so pitch changes can change word meaning.'},
+      {name:'German', region:'Germany, Austria, Switzerland', difficulty:'Intermediate', time:'10–16 months', tags:['Technology','Science','Business','Music','Sports'], fact:'German is famous for expressive compound words.'},
+      {name:'Finnish', region:'Finland', difficulty:'Advanced', time:'18–26 months', tags:['Gaming','Technology','Nature','Music','Science'], fact:'Finnish has no grammatical gender.'},
+      {name:'Swedish', region:'Sweden and parts of Finland', difficulty:'Beginner', time:'8–12 months', tags:['Gaming','Technology','Music','Travel','Business'], fact:'Swedish has a melodic pitch accent that gives it a musical sound.'},
+      {name:'Spanish', region:'Spain, Latin America, United States', difficulty:'Beginner', time:'6–10 months', tags:['Travel','Music','Sports','Food','Movies'], fact:'Spanish is spoken by hundreds of millions of people across more than 20 countries.'},
+      {name:'French', region:'France, Canada, West Africa, Caribbean', difficulty:'Beginner', time:'8–12 months', tags:['Art','Travel','Food','Fashion','Business'], fact:'French has influenced diplomacy, cuisine, ballet, and fashion vocabulary worldwide.'},
+      {name:'Italian', region:'Italy, San Marino, Switzerland', difficulty:'Beginner', time:'7–11 months', tags:['Art','Food','Music','Travel','History'], fact:'Italian musical terms like allegro and soprano are used globally.'},
+      {name:'Arabic', region:'Middle East and North Africa', difficulty:'Advanced', time:'18–28 months', tags:['Business','Travel','History','Science','Art'], fact:'Arabic calligraphy is a major art form across many cultures.'},
+      {name:'Portuguese', region:'Brazil, Portugal, Angola, Mozambique', difficulty:'Beginner', time:'7–12 months', tags:['Music','Sports','Travel','Business','Nature'], fact:'Brazil has the largest Portuguese-speaking population in the world.'},
+      {name:'Hindi', region:'India and global diaspora', difficulty:'Intermediate', time:'12–18 months', tags:['Movies','Music','Business','Travel','Food'], fact:'Hindi cinema helps learners hear everyday expressions through songs and dialogue.'},
+      {name:'Dutch', region:'Netherlands, Belgium, Suriname', difficulty:'Beginner', time:'7–11 months', tags:['Business','Art','Technology','Travel','Sports'], fact:'Dutch shares similarities with both English and German.'},
+      {name:'Turkish', region:'Türkiye, Cyprus, diaspora communities', difficulty:'Intermediate', time:'12–18 months', tags:['Travel','Food','History','Movies','Business'], fact:'Turkish uses vowel harmony, making word endings sound rhythmic.'}
+    ];
+    const colors = ['#8b5cf6','#06b6d4','#f97316','#22c55e','#ec4899','#eab308','#14b8a6','#6366f1'];
+    const state = { selected:new Set(['Technology','Gaming','Travel']), known:new Set(['English']), preferred:'English', wheel:[], rotation:0, spinning:false, result:null };
+    const $ = id => document.getElementById(id);
+    const ctx = $('wheel').getContext('2d');
+
+    function init(){ renderChips(); renderKnownChips(); loadTheme(); buildWheel(); renderSaved(); $('setupForm').addEventListener('submit', e=>{e.preventDefault(); buildWheel(true);}); $('spinBtn').onclick=spin; $('spinAgain').onclick=spin; $('shareBtn').onclick=shareImage; $('themeToggle').onclick=toggleTheme; $('sampleBtn').onclick=()=>{state.selected=new Set(['Anime','Gaming','Technology']); state.known=new Set(['English']); renderKnownChips(); buildWheel(true); renderChips();}; }
+    function renderChips(){ $('interestChips').innerHTML = interests.map(i=>`<button class="chip" type="button" aria-pressed="${state.selected.has(i)}" data-interest="${i}">${i}</button>`).join(''); document.querySelectorAll('[data-interest]').forEach(b=>b.onclick=()=>{state.selected.has(b.dataset.interest)?state.selected.delete(b.dataset.interest):state.selected.add(b.dataset.interest); renderChips(); buildWheel();}); }
+    function renderKnownChips(){ $('knownChips').innerHTML = knownOptions.map(i=>`<button class="chip known" type="button" aria-pressed="${state.known.has(i)}" data-known="${i}">${i}</button>`).join(''); document.querySelectorAll('[data-known]').forEach(b=>b.onclick=()=>{state.known.has(b.dataset.known)?state.known.delete(b.dataset.known):state.known.add(b.dataset.known); renderKnownChips(); buildWheel();}); }
+    function score(lang){ const interestScore = lang.tags.reduce((n,t)=> n + (state.selected.has(t)?2:0),0); const knownBoost = bridgeBoost(lang); const alreadyKnownPenalty = state.known.has(lang.name) ? -8 : 0; return interestScore + knownBoost + (lang.difficulty==='Beginner'?0.3:0) + alreadyKnownPenalty; }
+    function bridgeBoost(lang){ const known=[...state.known]; let boost=0; if(known.some(k=>['Spanish','French','Italian','Portuguese'].includes(k)) && ['French','Spanish','Italian','Portuguese'].includes(lang.name)) boost+=1.4; if(known.some(k=>['German','Dutch','Swedish','English'].includes(k)) && ['German','Dutch','Swedish'].includes(lang.name)) boost+=1.1; if(known.some(k=>['Japanese','Korean','Mandarin Chinese'].includes(k)) && ['Japanese','Korean','Mandarin Chinese'].includes(lang.name)) boost+=.8; if(known.includes('Arabic') && ['Turkish','Hindi'].includes(lang.name)) boost+=.5; return boost; }
+    function buildWheel(announce=false){ state.preferred = $('preferredLanguage').value; const ranked=[...languages].sort((a,b)=>score(b)-score(a)); state.wheel = ranked.filter(l=>score(l)>0).slice(0,8); if(state.wheel.length<6) state.wheel = ranked.slice(0,8); $('wheelTags').innerHTML = [...state.selected].map(i=>`<span class="pill">${i}</span>`).join(''); drawWheel(); updateAgent(); $('matchCount').textContent = state.wheel.length; if(announce) $('ticker').textContent = `Generated ${state.wheel.length} language matches for ${[...state.selected].join(', ') || 'open discovery'} with guidance in ${state.preferred}.`; }
+    function drawWheel(){ const c=$('wheel'), size=c.width, r=size/2, arc=(Math.PI*2)/state.wheel.length; ctx.clearRect(0,0,size,size); ctx.save(); ctx.translate(r,r); ctx.rotate(state.rotation); state.wheel.forEach((l,i)=>{ ctx.beginPath(); ctx.moveTo(0,0); ctx.arc(0,0,r-18,i*arc,(i+1)*arc); ctx.closePath(); ctx.fillStyle=colors[i%colors.length]; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.45)'; ctx.lineWidth=5; ctx.stroke(); ctx.save(); ctx.rotate(i*arc+arc/2); ctx.textAlign='right'; ctx.fillStyle='white'; ctx.font='800 34px Inter, sans-serif'; ctx.shadowColor='rgba(0,0,0,.35)'; ctx.shadowBlur=8; ctx.fillText(l.name,r-62,12); ctx.restore(); }); ctx.beginPath(); ctx.arc(0,0,92,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,.24)'; ctx.fill(); ctx.restore(); }
+    function spin(){ if(state.spinning || !state.wheel.length) return; state.spinning=true; $('spinBtn').disabled=true; $('wheelWrap').classList.add('spinning'); const extra=(Math.PI*2)*(5+Math.random()*3); const target=state.rotation + extra + Math.random()*Math.PI*2; const start=state.rotation, t0=performance.now(), dur=4800; function frame(now){ const p=Math.min(1,(now-t0)/dur); const eased=1-Math.pow(1-p,4); state.rotation=start+(target-start)*eased; drawWheel(); $('ticker').textContent = p<.72?'Building suspense…': p<.94?'Almost there…':'Choosing your match…'; if(p<1) requestAnimationFrame(frame); else finish(); } requestAnimationFrame(frame); }
+    function finish(){ state.spinning=false; $('spinBtn').disabled=false; $('wheelWrap').classList.remove('spinning'); const arc=(Math.PI*2)/state.wheel.length; const normalized=((Math.PI*1.5 - state.rotation)%(Math.PI*2)+(Math.PI*2))%(Math.PI*2); const index=Math.floor(normalized/arc)%state.wheel.length; showResult(state.wheel[index]); }
+    function showResult(lang){ state.result=lang; updateAgent(lang); $('resultName').textContent=lang.name; $('resultMeta').innerHTML=`<span class="pill">${lang.region}</span><span class="pill">${lang.difficulty}</span><span class="pill">${lang.time}</span><span class="pill">Preferred: ${state.preferred}</span>`; const matches=lang.tags.filter(t=>state.selected.has(t)); $('whyText').innerHTML=`<strong>Why it suits you:</strong> ${lang.name} connects with ${matches.length?matches.join(', '):'your curiosity'} and opens doors to culture, communities, media, and career contexts related to your interests.`; $('funFact').textContent=lang.fact; $('roadmap').innerHTML=roadmap(lang).map(s=>`<div class="step">${s}</div>`).join(''); $('challenge').textContent=`Today: learn 5 greetings in ${lang.name}, then find one song, article, or video from ${lang.region.split(',')[0]}.`; $('resultCard').classList.add('show'); $('ticker').textContent=`${lang.name} is your language match!`; saveResult(lang); celebrate(); renderSaved(); }
+    function updateAgent(current){ const top=state.wheel.slice(0,3); const known=[...state.known].join(', ') || 'no previous languages'; const focus=[...state.selected].slice(0,3).join(', ') || 'open exploration'; const bridge=top[0] ? `${top[0].name} is strongest because it aligns with ${top[0].tags.filter(t=>state.selected.has(t)).join(', ') || 'your broader profile'}${bridgeBoost(top[0])>0 ? ' and builds on languages you already know' : ''}.` : 'Choose interests to generate personalized suggestions.'; $('agentAdvice').innerHTML = `<p><strong>Agent readout:</strong> I am matching ${focus} against your known languages (${known}) and avoiding repeats.</p><ul class="agent-list"><li>${bridge}</li><li>Best next candidates: ${top.map(l=>l.name).join(' • ') || 'none yet'}.</li><li>${current ? `After landing on ${current.name}, start with a tiny project connected to ${focus}.` : 'Spin when the wheel feels right, then I will tailor the roadmap.'}</li></ul>`; }
+    function roadmap(l){ return [`Week 1: learn pronunciation, greetings, and a 50-word ${state.preferred}-to-${l.name} survival deck.`,`Month 1: practice 10 minutes daily with listening from ${l.region.split(',')[0]}.`,`Month 2: follow one ${[...state.selected][0]||'culture'} creator or publication and collect useful phrases.`,`Next milestone: complete a mini project such as ordering food, reviewing a game, or planning a trip in ${l.name}.`]; }
+    function saveResult(lang){ const history=JSON.parse(localStorage.getItem('ldw-history')||'[]'); history.unshift({name:lang.name, region:lang.region, date:new Date().toLocaleDateString()}); localStorage.setItem('ldw-history', JSON.stringify(history.slice(0,8))); }
+    function renderSaved(){ const h=JSON.parse(localStorage.getItem('ldw-history')||'[]'); $('historyList').innerHTML=h.length?h.map(x=>`<div class="history-item"><strong>${x.name}</strong><span>${x.date}</span></div>`).join(''):'<p class="lead">No spins yet.</p>'; $('progressLabel').textContent=h.length; $('progressFill').style.width=Math.min(100,h.length*12.5)+'%'; const badges=['First Spin','Culture Explorer','Polyglot Path','Streak Starter'].filter((_,i)=>h.length>i*2); $('badges').innerHTML=badges.length?badges.map(b=>`<div class="badge"><span>🏅 ${b}</span><span>Unlocked</span></div>`).join(''):'<p class="lead">Badges unlock as you spin and save discoveries.</p>'; }
+    function celebrate(){ const box=$('confetti'); box.innerHTML=''; for(let i=0;i<90;i++){ const p=document.createElement('i'); p.style.left=Math.random()*100+'vw'; p.style.top='-30px'; p.style.background=colors[i%colors.length]; p.style.animationDelay=Math.random()*0.35+'s'; p.style.transform=`rotate(${Math.random()*180}deg)`; box.appendChild(p); } setTimeout(()=>box.innerHTML='',2200); }
+    function shareImage(){ if(!state.result) return; const c=document.createElement('canvas'), x=c.getContext('2d'); c.width=1200; c.height=630; const g=x.createLinearGradient(0,0,1200,630); g.addColorStop(0,'#111827'); g.addColorStop(.5,'#4c1d95'); g.addColorStop(1,'#0891b2'); x.fillStyle=g; x.fillRect(0,0,c.width,c.height); x.fillStyle='rgba(255,255,255,.14)'; x.roundRect(70,70,1060,490,38); x.fill(); x.fillStyle='white'; x.font='900 54px Inter, sans-serif'; x.fillText('🎉 Your Language Match',110,160); x.font='900 96px Inter, sans-serif'; x.fillText(state.result.name,110,285); x.font='500 34px Inter, sans-serif'; x.fillText(`${state.result.region} • ${state.result.difficulty} • ${state.result.time}`,110,365); x.fillText(state.result.fact,110,445,980); const a=document.createElement('a'); a.download=`${state.result.name}-language-match.png`; a.href=c.toDataURL('image/png'); a.click(); }
+    function toggleTheme(){ const light=document.documentElement.dataset.theme!=='light'; document.documentElement.dataset.theme=light?'light':'dark'; localStorage.setItem('ldw-theme', light?'light':'dark'); $('themeToggle').textContent=light?'☀️ Light':'🌙 Dark'; }
+    function loadTheme(){ const t=localStorage.getItem('ldw-theme')||'dark'; document.documentElement.dataset.theme=t; $('themeToggle').textContent=t==='light'?'☀️ Light':'🌙 Dark'; }
+    init();
+  </script>
 </body>
 </html>
