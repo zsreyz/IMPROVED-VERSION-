@@ -1,8 +1,8 @@
 {
-  "name": "ai-founder-os",
-  "version": "1.0.1",
+  "name": "language-discovery-wheel",
+  "version": "1.0.0",
   "private": true,
-  "description": "AI Founder OS frontend + secure backend mentor gateway",
+  "description": "Interactive pure HTML, CSS, and JavaScript language discovery wheel",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

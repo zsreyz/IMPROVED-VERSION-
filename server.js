@@ -5,7 +5,7 @@ const { URL } = require('url');
 
 const PORT = Number(process.env.PORT || 3000);
 const MODEL_NAME = process.env.MODEL_NAME || 'claude-sonnet-4-20250514';
-const API_KEY = process.env.ANTHROPIC_API_KEY || '';
+const API_KEY = process.env.ANTHROPIC_API_KEY || ''; // Optional legacy mentor endpoint; the wheel app is fully client-side.
 const ROOT = __dirname;
 const LIMIT_WINDOW_MS = 60 * 1000;
 const LIMIT_MAX = 30;
@@ -212,5 +212,5 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`AI Founder OS running on http://localhost:${PORT}`);
+  console.log(`Language Discovery Wheel running on http://localhost:${PORT}`);
 });
