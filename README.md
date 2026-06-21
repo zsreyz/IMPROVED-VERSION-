@@ -4,11 +4,12 @@ A polished, mobile-first educational web app that recommends a language based on
 
 ## Features
 
-- First-launch style interest and preferred-language setup.
-- Dynamically generated language wheel based on selected interests.
+- First-launch style interest, already-learned-language, and preferred-language setup.
+- Dynamically generated language wheel based on selected interests and language-learning background.
 - Realistic spinning animation with suspenseful easing.
 - Dramatic result reveal with confetti, difficulty, region, match rationale, fun fact, and estimated learning time.
 - AI-style learning roadmap generated in-browser from the revealed language and selected interests.
+- Discovery Agent panel that explains personalized suggestions, bridge-language boosts, and repeat-language avoidance.
 - Spin again, previous result history, daily challenge, progress tracker, achievement badges, light/dark mode, and share-as-image export.
 
 ## Quick start
